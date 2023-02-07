@@ -35,7 +35,7 @@ or
 
 Press the run button from your IDE.
 
-After startup the API documentation wile be available here : [API documentation ](http://localhost:8080/swagger-ui/index.html)
+After startup the API documentation will be available here : [API documentation ](http://localhost:8080/swagger-ui/index.html)
 
 ## Stack
 - Java 17
