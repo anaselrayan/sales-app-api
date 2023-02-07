@@ -9,6 +9,6 @@ import jakarta.validation.constraints.Positive;
 public record ParkCreateRequestDto(
         @NotEmpty String name,
         @NotNull @JsonProperty("park-type") ParkType parkType,
-        @Positive int capacity
+        @Positive @NotNull int capacity
 ) {
 }

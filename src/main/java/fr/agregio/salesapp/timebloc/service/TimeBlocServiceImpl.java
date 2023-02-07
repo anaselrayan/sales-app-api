@@ -4,11 +4,13 @@ import fr.agregio.salesapp.timebloc.exception.TimeBlocNotFoundException;
 import fr.agregio.salesapp.timebloc.model.TimeBloc;
 import fr.agregio.salesapp.timebloc.repository.TimeBlocRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class TimeBlocServiceImpl implements TimeBlocService {
@@ -16,6 +18,8 @@ public class TimeBlocServiceImpl implements TimeBlocService {
 
     @Override
     public TimeBloc createNewTimeBloc(TimeBloc timeBloc) {
+        log.info("Create new time bloc: {}", timeBloc);
+
         return timeBlocRepository.save(timeBloc);
     }
 

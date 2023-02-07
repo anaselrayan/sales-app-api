@@ -3,22 +3,21 @@ package fr.agregio.salesapp.park.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import fr.agregio.salesapp.offer.model.Offer;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Getter
-@Setter
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
+@Data
 @Entity
 public class Park {
     @Id
     @GeneratedValue
-    @EqualsAndHashCode.Include
     private UUID id;
 
     private String name;
@@ -29,9 +28,9 @@ public class Park {
     private int capacity;
 
     @ManyToMany
-    @JoinTable(name = "produce_offer",
+    @JoinTable(name = "park_offer",
                joinColumns = @JoinColumn(name = "park_id"),
-               inverseJoinColumns = @JoinColumn(name = "course_id"))
+               inverseJoinColumns = @JoinColumn(name = "offer_id"))
     @JsonBackReference
     private Set<Offer> offers = new HashSet<>();
 

@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public record OfferCreateRequestDto(
         @NotNull @JsonProperty("market-type") MarketType marketType,
-        @Positive BigDecimal price,
+        @Positive @NotNull BigDecimal price,
         @NotEmpty List<UUID> blocs,
         @NotEmpty List<UUID> parks
 ) {

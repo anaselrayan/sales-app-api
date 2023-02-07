@@ -10,12 +10,13 @@ import fr.agregio.salesapp.park.service.ParkService;
 import fr.agregio.salesapp.timebloc.service.TimeBlocService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class OfferServiceImpl implements OfferService {
 
@@ -23,8 +24,11 @@ public class OfferServiceImpl implements OfferService {
     private final TimeBlocService timeBlocService;
     private final ParkService parkService;
 
+    @Transactional
     @Override
     public OfferDto createNewOffer(OfferCreateRequestDto offerCreateRequestDto) {
+        log.info("Create new offer: {}", offerCreateRequestDto);
+
         Offer newOffer = offerRepository.save(new Offer(offerCreateRequestDto.marketType(),
                                                         offerCreateRequestDto.price()));
 

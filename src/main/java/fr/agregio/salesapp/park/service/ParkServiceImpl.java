@@ -8,19 +8,23 @@ import fr.agregio.salesapp.park.dto.ParkMapper;
 import fr.agregio.salesapp.park.exception.ParkNotFoundException;
 import fr.agregio.salesapp.park.model.Park;
 import fr.agregio.salesapp.park.repository.ParkRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class ParkServiceImpl implements ParkService {
     private final ParkRepository parkRepository;
 
     @Override
     public ParkDto createNewPark(ParkCreateRequestDto parkCreateRequestDto) {
+        log.info("Create new park: {}", parkCreateRequestDto);
+
         Park park = ParkMapper.fromParkCreateRequestDto(parkCreateRequestDto);
         return ParkMapper.toParkDto(parkRepository.save(park));
     }

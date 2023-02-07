@@ -16,7 +16,9 @@ import org.springframework.context.annotation.Bean;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static fr.agregio.salesapp.offer.model.MarketType.*;
@@ -32,38 +34,35 @@ public class SalesAppApplication {
     CommandLineRunner fillData(ParkService parkService, TimeBlocService timeBlocService, OfferService offerService, ApplicationContext applicationContext) {
         return args -> {
 
-            // TimeBlocs creation
-
             LocalTime firstBlocStartTime = LocalTime.of(0, 0, 0);
-            List<TimeBloc> timeBlocs = Stream.of(new TimeBloc(firstBlocStartTime,
+            List<TimeBloc> timeBlocs = Stream.of(new TimeBloc(UUID.fromString("809ea1e8-1f4c-4b4e-9fa4-53d24150ad32"),
+                                                              firstBlocStartTime,
                                                               firstBlocStartTime.plusHours(3),
-                                                              1000,
+                                                              4500,
                                                               BigDecimal.TEN),
-                                                 new TimeBloc(firstBlocStartTime.plusHours(3),
+                                                 new TimeBloc(UUID.fromString("5ecb0116-2463-468f-924b-bca63ede7441"),
+                                                              firstBlocStartTime.plusHours(3),
                                                               firstBlocStartTime.plusHours(6),
-                                                              1000,
+                                                              6500,
                                                               BigDecimal.TEN),
-                                                 new TimeBloc(firstBlocStartTime.plusHours(6),
+                                                 new TimeBloc(UUID.fromString("43395128-89d1-4d4c-9a56-6e19c1e909b8"),
+                                                              firstBlocStartTime.plusHours(6),
                                                               firstBlocStartTime.plusHours(9),
-                                                              1000,
+                                                              1700,
                                                               BigDecimal.TEN),
-                                                 new TimeBloc(firstBlocStartTime.plusHours(9),
+                                                 new TimeBloc(UUID.fromString("a6606940-ec1f-41e8-b5f5-370bb22e0b81"),
+                                                              firstBlocStartTime.plusHours(9),
                                                               firstBlocStartTime.plusHours(12),
-                                                              1000,
+                                                              9000,
                                                               BigDecimal.TEN))
                                              .map(timeBlocService::createNewTimeBloc)
                                              .toList();
-
-            // Parks creation
 
             List<ParkDto> parkDtos = Stream.of(new ParkCreateRequestDto("Park 1", ParkType.SOLAR, 100),
                                                new ParkCreateRequestDto("Park 3", ParkType.HYDRAULIC, 300),
                                                new ParkCreateRequestDto("Park 2", ParkType.WIND, 200))
                                            .map(parkService::createNewPark)
                                            .toList();
-
-
-            // Offers creation
 
             Stream.of(new OfferCreateRequestDto(PRIMARY_RESERVE,
                                                 BigDecimal.ONE,
@@ -86,7 +85,11 @@ public class SalesAppApplication {
                                                 List.of(timeBlocs.get(3)
                                                                  .getId()),
                                                 List.of(parkDtos.get(1)
-                                                                .id())))
+                                                                .id())),
+                      new OfferCreateRequestDto(SECONDARY_RESERVE,
+                                                BigDecimal.ONE,
+                                                Collections.emptyList(),
+                                                Collections.emptyList()))
                   .forEach(offerService::createNewOffer);
         };
     }
