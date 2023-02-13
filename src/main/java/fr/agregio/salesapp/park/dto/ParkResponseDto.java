@@ -6,5 +6,4 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record ParkResponseDto(UUID id, String name, ParkType parkType, int capacity) {
-}
+public record ParkResponseDto(UUID id, String name, ParkType parkType, int capacity) {}

@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TimeBlocService {
-    TimeBloc createNewTimeBloc(TimeBloc timeBloc);
-
     TimeBloc getTimeBlocById(UUID timeBlocId);
 
     List<TimeBloc> findAll();

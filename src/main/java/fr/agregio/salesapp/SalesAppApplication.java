@@ -10,7 +10,7 @@ public class SalesAppApplication {
         SpringApplication.run(SalesAppApplication.class, args);
     }
 
-//    @Bean
+    //    @Bean
     //    CommandLineRunner fillData(ParkService parkService, TimeBlocService timeBlocService, OfferService
     //    offerService, ApplicationContext applicationContext) {
     //        return args -> {

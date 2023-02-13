@@ -17,16 +17,8 @@ public class TimeBlocServiceImpl implements TimeBlocService {
     private final TimeBlocRepository timeBlocRepository;
 
     @Override
-    public TimeBloc createNewTimeBloc(TimeBloc timeBloc) {
-        log.info("Create new time bloc: {}", timeBloc);
-
-        return timeBlocRepository.save(timeBloc);
-    }
-
-    @Override
     public TimeBloc getTimeBlocById(UUID timeBlocId) {
-        return timeBlocRepository.findById(timeBlocId)
-                                 .orElseThrow(() -> new TimeBlocNotFoundException(timeBlocId));
+        return timeBlocRepository.findById(timeBlocId).orElseThrow(() -> new TimeBlocNotFoundException(timeBlocId));
     }
 
     @Override

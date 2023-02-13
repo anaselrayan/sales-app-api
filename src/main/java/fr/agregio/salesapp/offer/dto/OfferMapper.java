@@ -5,8 +5,8 @@ import fr.agregio.salesapp.park.dto.ParkMapper;
 import fr.agregio.salesapp.park.dto.ParkResponseDto;
 import fr.agregio.salesapp.park.model.Park;
 import fr.agregio.salesapp.park.service.ParkService;
-import fr.agregio.salesapp.timebloc.dto.TimeBlocDto;
 import fr.agregio.salesapp.timebloc.dto.TimeBlocMapper;
+import fr.agregio.salesapp.timebloc.dto.TimeBlocResponseDto;
 import fr.agregio.salesapp.timebloc.model.TimeBloc;
 import fr.agregio.salesapp.timebloc.service.TimeBlocService;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +21,15 @@ public class OfferMapper {
     private final TimeBlocService timeBlocService;
     private final ParkService parkService;
     private final ParkMapper parkMapper;
+    private final TimeBlocMapper timeBlockMapper;
 
 
     public OfferResponseDto toOfferResponseDto(Offer offer) {
-        List<TimeBlocDto> blocs = offer.getBlocs().stream().map(TimeBlocMapper::toTimeBlocDto).toList();
+        List<TimeBlocResponseDto> blocs = offer.getBlocs()
+                .stream()
+                .map(timeBlockMapper::toTimeBlocResponseDto)
+                .toList();
+
         List<ParkResponseDto> parks = offer.getParks().stream().map(parkMapper::toParkResponseDto).toList();
 
         return OfferResponseDto.builder()
