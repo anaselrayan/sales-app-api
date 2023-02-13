@@ -2,9 +2,6 @@ package fr.agregio.salesapp.park.service;
 
 import fr.agregio.salesapp.offer.model.MarketType;
 import fr.agregio.salesapp.offer.model.Offer;
-import fr.agregio.salesapp.park.dto.ParkCreateRequestDto;
-import fr.agregio.salesapp.park.dto.ParkDto;
-import fr.agregio.salesapp.park.dto.ParkMapper;
 import fr.agregio.salesapp.park.exception.ParkNotFoundException;
 import fr.agregio.salesapp.park.model.Park;
 import fr.agregio.salesapp.park.repository.ParkRepository;
@@ -22,16 +19,14 @@ public class ParkServiceImpl implements ParkService {
     private final ParkRepository parkRepository;
 
     @Override
-    public ParkDto createNewPark(ParkCreateRequestDto parkCreateRequestDto) {
-        log.info("Create new park: {}", parkCreateRequestDto);
-
-        Park park = ParkMapper.fromParkCreateRequestDto(parkCreateRequestDto);
-        return ParkMapper.toParkDto(parkRepository.save(park));
+    public Park createNewPark(Park newPark) {
+        log.info("Create new park: {}", newPark);
+        return parkRepository.save(newPark);
     }
 
     @Override
-    public List<ParkDto> findAllByMarketType(MarketType marketType) {
-        return parkRepository.findAllByMarketType(marketType).stream().map(ParkMapper::toParkDto).toList();
+    public List<Park> findAllByMarketType(MarketType marketType) {
+        return parkRepository.findAllByMarketType(marketType);
     }
 
     @Override
