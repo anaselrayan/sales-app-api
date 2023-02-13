@@ -2,21 +2,46 @@ package fr.agregio.salesapp.offer.dto;
 
 import fr.agregio.salesapp.offer.model.Offer;
 import fr.agregio.salesapp.park.dto.ParkMapper;
+import fr.agregio.salesapp.park.model.Park;
+import fr.agregio.salesapp.park.service.ParkService;
 import fr.agregio.salesapp.timebloc.dto.TimeBlocMapper;
+import fr.agregio.salesapp.timebloc.model.TimeBloc;
+import fr.agregio.salesapp.timebloc.service.TimeBlocService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+@RequiredArgsConstructor
+@Component
 public class OfferMapper {
 
-    public static OfferDto toOfferDto(Offer offer) {
-        return new OfferDto(offer.getId(),
-                            offer.getMarketType(),
-                            offer.getPrice(),
-                            offer.getBlocs()
-                                 .stream()
-                                 .map(TimeBlocMapper::toTimeBlocDto)
-                                 .toList(),
-                            offer.getParks()
-                                 .stream()
-                                 .map(ParkMapper::toParkDto)
-                                 .toList());
+    private TimeBlocService timeBlocService;
+    private ParkService parkService;
+
+    public OfferResponseDto toOfferResponseDto(Offer offer) {
+        return OfferResponseDto.builder()
+                .id(offer.getId())
+                .marketType(offer.getMarketType())
+                .price(offer.getPrice())
+                .blocs(offer.getBlocs().stream().map(TimeBlocMapper::toTimeBlocDto).toList())
+                .parks(offer.getParks().stream().map(ParkMapper::toParkDto).toList())
+                .build();
+    }
+
+    public Offer fromOfferCreateRequestDto(OfferCreateRequestDto offerCreateRequestDto) {
+        List<TimeBloc> timeBlocs = offerCreateRequestDto.blocs()
+                .stream()
+                .map(timeBlocService::getTimeBlocById)
+                .toList();
+
+        List<Park> parks = offerCreateRequestDto.parks().stream().map(parkService::getParkById).toList();
+
+        return Offer.builder()
+                .marketType(offerCreateRequestDto.marketType())
+                .price(offerCreateRequestDto.price())
+                .blocs(timeBlocs)
+                .parks(parks)
+                .build();
     }
 }

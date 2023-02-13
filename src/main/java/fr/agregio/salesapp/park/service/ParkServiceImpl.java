@@ -31,17 +31,17 @@ public class ParkServiceImpl implements ParkService {
 
     @Override
     public List<ParkDto> findAllByMarketType(MarketType marketType) {
-        return parkRepository.findAllByMarketType(marketType)
-                             .stream()
-                             .map(ParkMapper::toParkDto)
-                             .toList();
+        return parkRepository.findAllByMarketType(marketType).stream().map(ParkMapper::toParkDto).toList();
     }
 
     @Override
-    public boolean addOfferToPark(Offer offer, UUID parkId) {
-        return parkRepository.findById(parkId)
-                             .orElseThrow(() -> new ParkNotFoundException(parkId))
-                             .addOffer(offer);
+    public boolean addOfferToPark(Offer offer, Park park) {
+        return getParkById(park.getId()).addOffer(offer);
+    }
+
+    @Override
+    public Park getParkById(UUID parkId) {
+        return parkRepository.findById(parkId).orElseThrow(() -> new ParkNotFoundException(parkId));
     }
 
 }

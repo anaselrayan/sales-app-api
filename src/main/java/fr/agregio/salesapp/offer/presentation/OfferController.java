@@ -1,8 +1,10 @@
 package fr.agregio.salesapp.offer.presentation;
 
 import fr.agregio.salesapp.offer.dto.OfferCreateRequestDto;
-import fr.agregio.salesapp.offer.dto.OfferDto;
+import fr.agregio.salesapp.offer.dto.OfferMapper;
+import fr.agregio.salesapp.offer.dto.OfferResponseDto;
 import fr.agregio.salesapp.offer.model.MarketType;
+import fr.agregio.salesapp.offer.model.Offer;
 import fr.agregio.salesapp.offer.service.OfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,16 +17,18 @@ import java.util.List;
 public class OfferController {
 
     private final OfferService offerService;
+    private final OfferMapper offerMapper;
 
 
     @PostMapping
-    public OfferDto createNewOffer(@RequestBody OfferCreateRequestDto offerCreateRequestDto) {
-        return offerService.createNewOffer(offerCreateRequestDto);
+    public OfferResponseDto createNewOffer(@RequestBody OfferCreateRequestDto offerCreateRequestDto) {
+        Offer newOffer = offerMapper.fromOfferCreateRequestDto(offerCreateRequestDto);
+        return offerMapper.toOfferResponseDto(offerService.createNewOffer(newOffer));
     }
 
     @GetMapping
-    public List<OfferDto> findAllByMarketType(@RequestParam(name = "market-type") MarketType marketType) {
-        return offerService.findAllByMarketType(marketType);
+    public List<OfferResponseDto> findAllByMarketType(@RequestParam(name = "market-type") MarketType marketType) {
+        return offerService.findAllByMarketType(marketType).stream().map(offerMapper::toOfferResponseDto).toList();
     }
 
 }
